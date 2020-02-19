@@ -23,10 +23,29 @@ def read_file(file_name):
             v[idx] = img_tags
         idx += 1
     return h, v
-
-h, v = read_file('a_example.txt')
+def find_biggest_img(h, super_v):
+    bg_idx = 0
+    bg_tags = 0
+    for i in h:
+        if len(h[i]) > bg_tags:
+            bg_idx = i
+            bg_tags = len(h[i])
+    for i in super_v:
+        if len(super_v[i]) > bg_tags:
+            bg_idx = i
+            bg_tags = len(super_v[i])
+    return [bg_idx]
+a = 'a_example.txt'
+b = 'b_lovely_landscapes.txt'
+c = 'c_memorable_moments.txt'
+d = 'd_pet_pictures.txt'
+e = 'e_shiny_selfies.txt'
+h, v = read_file(a)
 print(h)
 print(v)
+slideshow = find_biggest_img(h, v)
+print(slideshow)
+
 
 def calulateScore(cur_image, image):
     uniqueTags = list() #list of venn diagram unique, intersect, unquie
