@@ -74,6 +74,44 @@ image2 = {"cat", "garden", "beach", "hello"}
 
 # print(calulateScore(image1, image2))
 
+def get_dff(t1, t2):
+    return max( t1.difference(t2), t2.difference(t1) )
+def create_super_v(v):
+    super_v = {}
+    # getting img with most tags 
+    max_tags = 0
+    max_idx = -1
+    for img in v:
+        if len(v[img]) > max_tags:
+            max_tags = len(v[img])
+            max_idx = img
+    # print("max img", v[max_idx])
+    # finding matches with the greatest difference
+    ignore = set()
+    v_list = list(v.keys())
+    v_list.insert(0, max_idx)
+    for img in v_list:
+        max_diff = -1 
+        max_idx = -1
+        if img in ignore:
+            continue
+        ignore.add(img)
+        for jmg in v:
+            if jmg in ignore:
+                continue
+            diff = get_dff(v[img], v[jmg])
+            if diff > max_diff:
+                max_diff = diff
+                max_idx = jmg
+        combined_key = str(img) + '_' + str(max_idx) 
+        super_v[ combined_key ] = v[img]
+        super_v[ combined_key ].update(v[max_idx])
+        ignore.add(max_idx)
+    return super_v
+
+super_v = create_super_v(v)
+print(super_v)
+
 def create_tags(h, super_v):
     tags = {}
     for img in h:
@@ -89,4 +127,4 @@ def create_tags(h, super_v):
     return tags
 
 tags = create_tags(h, v)
-print(tags)
+# print(tags)
