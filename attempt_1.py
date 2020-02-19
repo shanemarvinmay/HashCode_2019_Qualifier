@@ -41,11 +41,10 @@ c = 'c_memorable_moments.txt'
 d = 'd_pet_pictures.txt'
 e = 'e_shiny_selfies.txt'
 h, v = read_file(a)
-print(h)
-print(v)
+# print(h)
+# print(v)
 slideshow = find_biggest_img(h, v)
 print(slideshow)
-
 
 def calulateScore(cur_image, image):
     uniqueTags = list() #list of venn diagram unique, intersect, unquie
@@ -74,3 +73,20 @@ image1 = {"cat", "beach", "sun", "world"}
 image2 = {"cat", "garden", "beach", "hello"}
 
 # print(calulateScore(image1, image2))
+
+def create_tags(h, super_v):
+    tags = {}
+    for img in h:
+        for tag in h[img]:
+            if tag not in tags:
+                tags[tag] = set()
+            tags[tag].add(img)
+    for img in super_v:
+        for tag in super_v[img]:
+            if tag not in tags:
+                tags[tag] = set()
+            tags[tag].add(img)
+    return tags
+
+tags = create_tags(h, v)
+print(tags)
