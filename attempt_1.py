@@ -44,8 +44,7 @@ def calculate_score(cur_image, image):
     #calculate the unqinue of cur_image
     for tag in cur_image:
         if not(tag in image):
-            unique_value
-     += 1
+            unique_value+= 1
 
     unique_tags.append(unique_value) #the unique of cur_image appeneded
     unique_tags.append(len(cur_image) - unique_value) #the number of intersecting
@@ -55,8 +54,7 @@ def calculate_score(cur_image, image):
      #calculate the unqinue of image
     for tag in image:
         if not(tag in cur_image):
-            unique_value
-     += 1
+            unique_value+= 1
     
     unique_tags.append(unique_value)
     
@@ -125,8 +123,14 @@ def create_tags(h, super_v):
                 tags[tag] = set()
 
             tags[tag].add(img)
-            
+
     return tags
+
+def scoring(slideshow):
+    print(slideshow)
+
+
+
 
 
 a = 'a_example.txt'
@@ -140,5 +144,5 @@ slideshow = find_biggest_img(h, v)
 super_v = create_super_v(v)
 tags = create_tags(h, v)
 
-print(super_v)
+# print(super_v)
 print(slideshow)
