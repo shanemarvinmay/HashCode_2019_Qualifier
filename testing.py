@@ -22,9 +22,9 @@ def scoring(input_file, output_file):
 
         # putting the img in either h or v
         if img[0] == 'H':
-            h[idx] = img_tags
+            h[str(idx)] = img_tags
         else: 
-            v[idx] = img_tags
+            v[str(idx)] = img_tags
         idx += 1
     
     #create superV
@@ -51,12 +51,12 @@ def scoring(input_file, output_file):
     for x in range(len(slideshow) - 1):
         cur_image = (slideshow[x])
         compare_image = (slideshow[x+1])
-        print(cur_image)
-        print(compare_image)
+        print(cur_image, tags.get(cur_image))
+        print(compare_image, tags.get(compare_image))
 
-        score += calculate_score(tags.get(cur_image), tags.get(compare_image))
+        # score += calculate_score(tags.get(cur_image), tags.get(compare_image))
     
-    return score
+    # return score
     # print(tags)
     # print(slideshow)
 
@@ -112,24 +112,27 @@ def calculate_score(cur_image, image):
     unique_tags = list() #list of venn diagram unique, intersect, unquie
     unique_value = 0 #the number that will be added to list
     
+    # print(cur_image)
+    # print(image)
+
     #calculate the unqinue of cur_image
-    for tag in cur_image:
-        if not(tag in image):
-            unique_value+= 1
+    # for tag in cur_image:
+    #     if not(tag in image):
+    #         unique_value+= 1
 
-    unique_tags.append(unique_value) #the unique of cur_image appeneded
-    unique_tags.append(len(cur_image) - unique_value) #the number of intersecting
+    # unique_tags.append(unique_value) #the unique of cur_image appeneded
+    # unique_tags.append(len(cur_image) - unique_value) #the number of intersecting
 
-    unique_value = 0
+    # unique_value = 0
 
-     #calculate the unqinue of image
-    for tag in image:
-        if not(tag in cur_image):
-            unique_value+= 1
+    #  #calculate the unqinue of image
+    # for tag in image:
+    #     if not(tag in cur_image):
+    #         unique_value+= 1
     
-    unique_tags.append(unique_value)
+    # unique_tags.append(unique_value)
     
-    return min(unique_tags) #return the minimum of the three
+    return 0#min(unique_tags) #return the minimum of the three
 
 
 print(scoring("a_example.txt", "a_sample_answer.txt"))
