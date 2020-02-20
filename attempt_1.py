@@ -44,7 +44,7 @@ h, v = read_file(a)
 # print(h)
 # print(v)
 slideshow = find_biggest_img(h, v)
-print(slideshow)
+# print(slideshow)
 
 def calulateScore(cur_image, image):
     uniqueTags = list() #list of venn diagram unique, intersect, unquie
@@ -85,7 +85,6 @@ def create_super_v(v):
         if len(v[img]) > max_tags:
             max_tags = len(v[img])
             max_idx = img
-    # print("max img", v[max_idx])
     # finding matches with the greatest difference
     ignore = set()
     v_list = list(v.keys())
@@ -110,7 +109,7 @@ def create_super_v(v):
     return super_v
 
 super_v = create_super_v(v)
-print(super_v)
+# print(super_v)
 
 def create_tags(h, super_v):
     tags = {}
@@ -126,5 +125,37 @@ def create_tags(h, super_v):
             tags[tag].add(img)
     return tags
 
-tags = create_tags(h, v)
+tags = create_tags(h, super_v)
+# print('')
 # print(tags)
+
+def find_best_match(img_idx, img_tags, h, super_v, tags, ignore):
+    # getting all possible matching imgs 
+    matches = set()
+    for tag in img_tags:
+        for img in tags[tag]:
+            if img != img_idx and img not in ignore:
+                matches.add(img)
+    # find the highest scoring match out of the possible matching imgs 
+    biggest_idx = -1
+    biggest_score = 0
+    for match in matches:
+        match_tags = None
+        if match in h:
+            match_tags = h[match]
+        else:
+            match_tags = super_v[match]
+        score = calulateScore(img_tags, match_tags)
+        if score > biggest_score:
+            biggest_idx = match
+            biggest_score = score
+    return biggest_idx
+
+print(h)
+print(super_v)
+ignore = set() # this is used to hold images that have already been used
+ignore.add(0)
+ignore.add( find_best_match(0, h[0], h, super_v, tags, ignore) )
+print(  ignore )
+ignore.add( find_best_match(3, h[3], h, super_v, tags, ignore) )
+print( ignore )
