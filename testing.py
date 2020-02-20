@@ -41,6 +41,7 @@ def scoring(input_file, output_file):
 
     slideshow = slideshow.split('\n')
     del slideshow[0]
+    del slideshow[-1]
 
     #replacing all spaces with _
     for x in range(len(slideshow)):
@@ -51,12 +52,12 @@ def scoring(input_file, output_file):
     for x in range(len(slideshow) - 1):
         cur_image = (slideshow[x])
         compare_image = (slideshow[x+1])
-        print(cur_image, tags.get(cur_image))
-        print(compare_image, tags.get(compare_image))
+        # print(cur_image, tags.get(cur_image))
+        # print(compare_image, tags.get(compare_image))
 
-        # score += calculate_score(tags.get(cur_image), tags.get(compare_image))
+        score += calculate_score(tags.get(cur_image), tags.get(compare_image))
     
-    # return score
+    return score
     # print(tags)
     # print(slideshow)
 
@@ -69,44 +70,35 @@ def create_super_v(v):
     # getting img with most tags 
     max_tags = 0
     max_idx = -1
-
     for img in v:
         if len(v[img]) > max_tags:
             max_tags = len(v[img])
             max_idx = img
-
+    if max_idx == -1:
+        return {}
     # finding matches with the greatest difference
     ignore = set()
     v_list = list(v.keys())
     v_list.insert(0, max_idx)
-
     for img in v_list:
         max_diff = -1 
         max_idx = -1
-
         if img in ignore:
             continue
-
         ignore.add(img)
-
         for jmg in v:
             if jmg in ignore:
                 continue
-
             diff = get_dff(v[img], v[jmg])
-
             if diff > max_diff:
                 max_diff = diff
                 max_idx = jmg
-
-        combined_key = str(img) + '_' + str(max_idx) 
-
+        combined_key = str(img) + ' ' + str(max_idx) 
         super_v[ combined_key ] = v[img]
         super_v[ combined_key ].update(v[max_idx])
-    
         ignore.add(max_idx)
-    
     return super_v
+
 
 def calculate_score(cur_image, image):
     unique_tags = list() #list of venn diagram unique, intersect, unquie
@@ -116,23 +108,23 @@ def calculate_score(cur_image, image):
     # print(image)
 
     #calculate the unqinue of cur_image
-    # for tag in cur_image:
-    #     if not(tag in image):
-    #         unique_value+= 1
+    for tag in cur_image:
+        if not(tag in image):
+            unique_value+= 1
 
-    # unique_tags.append(unique_value) #the unique of cur_image appeneded
-    # unique_tags.append(len(cur_image) - unique_value) #the number of intersecting
+    unique_tags.append(unique_value) #the unique of cur_image appeneded
+    unique_tags.append(len(cur_image) - unique_value) #the number of intersecting
 
-    # unique_value = 0
+    unique_value = 0
 
-    #  #calculate the unqinue of image
-    # for tag in image:
-    #     if not(tag in cur_image):
-    #         unique_value+= 1
+    #calculate the unqinue of image
+    for tag in image:
+        if not(tag in cur_image):
+            unique_value+= 1
     
-    # unique_tags.append(unique_value)
+    unique_tags.append(unique_value)
     
-    return 0#min(unique_tags) #return the minimum of the three
+    return min(unique_tags) #retur  n the minimum of the three
 
 
-print(scoring("a_example.txt", "a_sample_answer.txt"))
+print(scoring("b_lovely_landscapes.txt", "b_output.txt"))
